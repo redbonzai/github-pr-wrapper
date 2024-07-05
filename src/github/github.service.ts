@@ -36,6 +36,7 @@ export class GithubService {
 
     try {
       const response = await axios.post(url, data, { headers });
+      console.log('PR CREATION RESPONSE: ', response);
       console.log('Pull request created successfully:', response.data.html_url);
     } catch (error) {
       console.error(

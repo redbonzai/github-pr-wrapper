@@ -12,6 +12,7 @@ export class GithubController {
     @Body('title') title: string,
     @Body('body') body: string,
   ): Promise<void> {
+    console.log('ABOUT to create PR ...');
     await this.githubService.createPullRequest(head, base, title, body);
   }
 }
