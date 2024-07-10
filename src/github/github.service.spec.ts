@@ -41,21 +41,24 @@ describe('GithubService', () => {
 
   it('should approve a pull request', async () => {
     const mockResponse = {};
-    vi.spyOn(global, 'fetch').mockResolvedValueOnce({
+    const fetchDataSpy = vi.spyOn(global, 'fetch').mockResolvedValueOnce({
       ok: true,
       json: async () => mockResponse,
     } as Response);
 
     await service.approvePullRequest(1);
 
-    expect(global.fetch).toHaveBeenCalledWith(
+    expect(fetchDataSpy).toHaveBeenCalledWith(
       'https://api.github.com/repos/test-owner/test-repo/pulls/1/reviews',
       'POST',
       {
         Authorization: 'token test-token',
         Accept: 'application/vnd.github.v3+json',
       },
-      { event: 'APPROVE' },
+      {
+        event: 'APPROVE',
+        method: 'POST',
+      },
 
     );
   });
