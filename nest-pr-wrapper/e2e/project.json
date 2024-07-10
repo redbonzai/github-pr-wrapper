@@ -3,7 +3,7 @@
   "$schema": "../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "implicitDependencies": [
-    "nx"
+    "nest-pr-wrapper"
   ],
   "targets": {
     "e2e": {
@@ -16,7 +16,7 @@
         "passWithNoTests": true
       },
       "dependsOn": [
-        "nx:build"
+        "nest-pr-wrapper:build"
       ]
     }
   }

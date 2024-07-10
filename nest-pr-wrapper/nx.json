@@ -34,8 +34,8 @@
       "options": {
         "targetName": "test"
       },
-      "exclude": ["apps/nest-pr-wrapper-e2e/**/*"]
+      "exclude": ["e2e/**/*"]
     }
   ],
-  "nxCloudAccessToken": "NTJhZTRhMDAtYTYzZS00ODkwLTg5YWItZjkxYTkyOTc1YTgwfHJlYWQtd3JpdGU="
+  "nxCloudAccessToken": "Njk1NDExZTMtZjc0YS00M2NiLWFkMjAtNmUzYzZmMDcwZGRmfHJlYWQtd3JpdGU="
 }

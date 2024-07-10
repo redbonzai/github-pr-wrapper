@@ -1,7 +1,7 @@
 {
   "name": "nest-pr-wrapper",
-  "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/nest-pr-wrapper/src",
+  "$schema": "node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "src",
   "projectType": "application",
   "tags": [],
   "targets": {
