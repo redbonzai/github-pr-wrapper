@@ -28,6 +28,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Install Nx CLI
+        run: pnpm add -D @nrwl/cli
+
       - name: Build the project
         run: nx run-many --targets=build --all
 
