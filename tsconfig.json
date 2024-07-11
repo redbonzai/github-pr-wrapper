@@ -22,7 +22,7 @@
       "@src/*": ["src/*"],
       "@test/*": ["test/*"]
     },
-    "include": ["src/**/*.ts", "test/**/*.ts", "*.js", "*.ts"],
-    "exclude": ["node_modules", "dist"]
-  }
+  },
+  "include": ["src/**/*.ts", "test/**/*.ts", "*.js", "*.ts"],
+  "exclude": ["node_modules", "dist"]
 }
