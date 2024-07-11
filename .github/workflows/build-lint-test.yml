@@ -29,7 +29,7 @@ jobs:
         run: pnpm install --no-frozen-lockfile
 
       - name: Add Nx CLI to PATH
-        run: echo "::add-path::$(pwd)/node_modules/.bin"
+        run: echo "/home/runner/.local/share/pnpm" >> $GITHUB_PATH
 
       - name: Build the project
         run: nx run-many --targets=build --all
