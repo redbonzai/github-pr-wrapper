@@ -48,7 +48,7 @@ jobs:
             fi
 
       - name: Build the project
-        run: pnpm dlx nx build
+        run: npx nx build
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
@@ -79,7 +79,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Lint the project
-        run: pnpm dlx nx lint
+        run: npx nx lint nest-pr-wrapper-root
 
   test:
     needs: build

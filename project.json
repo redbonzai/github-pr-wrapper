@@ -39,9 +39,13 @@
       }
     },
     "lint": {
-      "executor": "nx:run-commands",
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
       "options": {
-        "command": "pnpm run lint"
+        "lintFilePatterns": [
+          "src/**/*.ts",
+          "libs/**/*.ts"
+        ]
       }
     },
     "test": {
