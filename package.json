@@ -23,8 +23,6 @@
     "@nestjs/common": "^10.3.10",
     "@nestjs/core": "^10.0.0",
     "@nestjs/platform-express": "^10.0.0",
-    "@types/axios": "^0.14.0",
-    "@vitest/coverage-c8": "^0.33.0",
     "@vitest/coverage-v8": "^1.6.0",
     "@vitest/snapshot": "^1.6.0",
     "@vitest/ui": "^1.6.0",

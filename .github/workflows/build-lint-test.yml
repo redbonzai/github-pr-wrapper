@@ -28,8 +28,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Install Nx CLI
-        run: pnpm add -D @nrwl/cli
+      - name: Add Nx CLI to PATH
+        run: echo "::add-path::$(pwd)/node_modules/.bin"
 
       - name: Build the project
         run: nx run-many --targets=build --all
