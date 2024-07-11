@@ -48,7 +48,7 @@ jobs:
             fi
 
       - name: Build the project
-        run: pnpm run build
+        run: pnpm dlx nx build
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
@@ -73,13 +73,13 @@ jobs:
       - name: Install PNPM
         uses: pnpm/action-setup@v2
         with:
-          version: 8
+          version: 9
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: Lint the project
-        run: pnpm run lint
+        run: pnpm dlx nx lint
 
   test:
     needs: build
@@ -98,7 +98,7 @@ jobs:
       - name: Install PNPM
         uses: pnpm/action-setup@v2
         with:
-          version: 8
+          version: 9
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -131,7 +131,7 @@ jobs:
       - name: Install PNPM
         uses: pnpm/action-setup@v2
         with:
-          version: 8
+          version: 9
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
