@@ -13,6 +13,7 @@
           "test",
           "e2e"
         ],
+        "heartbeatTimeout": 10000,
         "accessToken": "NX_ACCESS_TOKEN_PLACEHOLDER"
       }
     }
