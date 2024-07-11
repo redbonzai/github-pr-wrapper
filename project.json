@@ -1,0 +1,57 @@
+{
+  "name": "nest-pr-wrapper-root",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist",
+        "main": "src/main.ts",
+        "tsConfig": "tsconfig.json",
+        "assets": ["src/assets"]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "src/environments/environment.ts",
+              "with": "src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/js:node",
+      "options": {
+        "buildTarget": "nest-pr-wrapper:build"
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "nest-pr-wrapper:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm run lint"
+      }
+    },
+    "test": {
+      "executor": "@nrwl/vite:test",
+      "outputs": ["{projectRoot}/coverage"],
+      "options": {
+        "passWithNoTests": true,
+        "reportsDirectory": "{projectRoot}/coverage"
+      }
+    }
+  },
+  "tags": []
+}

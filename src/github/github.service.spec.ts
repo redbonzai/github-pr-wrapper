@@ -59,7 +59,6 @@ describe('GithubService', () => {
         event: 'APPROVE',
         method: 'POST',
       },
-
     );
   });
 

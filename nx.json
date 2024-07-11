@@ -1,0 +1,33 @@
+{
+  "npmScope": "nest-pr-wrapper",
+  "affected": {
+    "defaultBase": "main"
+  },
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "nx-cloud",
+      "options": {
+        "cacheableOperations": [
+          "build",
+          "lint",
+          "test",
+          "e2e"
+        ],
+        "accessToken": "PLACEHOLDER_FOR_ACCESS_TOKEN"
+      }
+    }
+  },
+  "targetDefaults": {
+    "lint": {
+      "inputs": [
+        "default",
+        "{workspaceRoot}/eslint.config.js"
+      ]
+    }
+  },
+  "projects": {
+    "nest-pr-wrapper-root": {
+      "tags": []
+    }
+  }
+}
