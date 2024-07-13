@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { fetchData } from '@libs/services/fetch.service';
-import axios from 'axios';
 
 @Injectable()
 export class GithubService {
