@@ -14,7 +14,7 @@
           "e2e"
         ],
         "heartbeatTimeout": 10000,
-        "accessToken": "MjAwNTZiZTUtMTE1MC00OWYyLTk3MWEtYjJjZDY4NmI5NWM1fHJlYWQtd3JpdGU="
+        "accessToken": "NX_ACCESS_TOKEN_PLACEHOLDER"
       }
     }
   },
