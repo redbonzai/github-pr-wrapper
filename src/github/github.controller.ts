@@ -33,12 +33,7 @@ export class GithubController {
     @Body('user-access-token') token: string,
   ): Promise<void> {
     try {
-      await this.githubService.commentOnPullRequest(
-        pullRequestNumber,
-        comment,
-        username,
-        token,
-      );
+      await this.githubService.commentOnPullRequest(pullRequestNumber, comment, username, token);
     } catch (error) {
       const serializedError = errorSerializer(error);
       this.logger.error('Error commenting on pull request:', serializedError);
@@ -61,18 +56,22 @@ export class GithubController {
       );
     } catch (error) {
       const serializedError = errorSerializer(error);
-      this.logger.error(
-        'Error requesting changes on pull request:',
-        serializedError,
-      );
+      this.logger.error('Error requesting changes on pull request:', serializedError);
     }
   }
-  // missing approve PR method.
+
+  @Post('/approve/:number')
+  async approvePullRequest(@Param('number') pullRequestNumber: number): Promise<void> {
+    try {
+      await this.githubService.approvePullRequest(pullRequestNumber);
+    } catch (error) {
+      const serializedError = errorSerializer(error);
+      this.logger.error('Error approving pull request:', serializedError);
+    }
+  }
 
   @Patch('/close/:number')
-  async closePullRequest(
-    @Param('number') pullRequestNumber: number,
-  ): Promise<void> {
+  async closePullRequest(@Param('number') pullRequestNumber: number): Promise<void> {
     try {
       await this.githubService.closePullRequest(pullRequestNumber);
     } catch (error) {

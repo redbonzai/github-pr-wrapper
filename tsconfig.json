@@ -23,6 +23,11 @@
       "@test/*": ["test/*"]
     },
   },
-  "include": ["src/**/*.ts", "test/**/*.ts", "*.js", "*.ts"],
+  "include": [
+    "src/**/*",
+    "libs/**/*",
+    "apps/**/*",
+    "tests/**/*"
+  ],
   "exclude": ["node_modules", "dist"]
 }
