@@ -47,8 +47,7 @@ describe('fetchData', () => {
   });
 
   it('should throw an error for a failed request', async () => {
-    const mockError = new Error('failed');
-    const fetchDataSpy = vi.spyOn(global, 'fetch').mockResolvedValueOnce({
+     vi.spyOn(global, 'fetch').mockResolvedValueOnce({
       ok: false,
       status: 500,
       json: async () => ({ message: 'Internal Server Error' }),

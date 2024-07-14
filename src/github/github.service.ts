@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import axios from 'axios';
 import { fetchData } from '@libs/services/fetch.service';
 
 @Injectable()
@@ -22,12 +21,7 @@ export class GithubService {
     };
   }
 
-  async createPullRequest(
-    head: string,
-    base: string,
-    title: string,
-    body: string,
-  ): Promise<any> {
+  async createPullRequest(head: string, base: string, title: string, body: string): Promise<any> {
     const url = `https://api.github.com/repos/${this.owner}/${this.repo}/pulls`;
     console.log('PR URL: ', url);
 
@@ -64,18 +58,10 @@ export class GithubService {
     };
 
     try {
-      const response = await fetchData(
-        url,
-        'POST',
-        this.getHeaders(token),
-        data,
-      );
+      const response = await fetchData(url, 'POST', this.getHeaders(token), data);
       console.log('Comment added successfully:', response.data);
     } catch (error) {
-      console.error(
-        'Error adding comment:',
-        error.response ? error.response.data : error.message,
-      );
+      console.error('Error adding comment:', error.response ? error.response.data : error.message);
     }
   }
 
@@ -94,12 +80,7 @@ export class GithubService {
     };
 
     try {
-      const response = await fetchData(
-        url,
-        'POST',
-        this.getHeaders(token),
-        data,
-      );
+      const response = await fetchData(url, 'POST', this.getHeaders(token), data);
 
       console.log('Requested changes successfully:', response.data);
     } catch (error) {
@@ -135,15 +116,29 @@ export class GithubService {
     };
 
     try {
-      const response = await axios.patch(url, data, {
-        headers: this.getHeaders(),
-      });
-      console.log('Pull request closed successfully:', response.data);
+      const response = await fetchData(url, 'PATCH', this.getHeaders(), data);
+      console.log('Pull request closed successfully:', response);
       return response;
     } catch (error) {
       console.error(
         'Error closing pull request:',
         error.response ? error.response.data : error.message,
+      );
+    }
+  }
+
+  async reOpenPullRequest(pullRequestNumber: number): Promise<any> {
+    const url = `https://api.github.com/repos/${this.owner}/${this.repo}/pulls/${pullRequestNumber}`;
+    const data = {
+      state: 'open',
+    };
+
+    try {
+      const response = await fetchData(url, 'PATCH', this.getHeaders(), data);
+      return response;
+    } catch (error) {
+      throw new Error(
+        'Error reopening pull request: ' + (error.response ? error.response.data : error.message),
       );
     }
   }

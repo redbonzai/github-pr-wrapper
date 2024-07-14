@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Patch, Param } from '@nestjs/common';
+import { Controller, Post, Body, Patch, Param, ParseIntPipe } from '@nestjs/common';
 import { GithubService } from './github.service';
 import { Logger } from 'nestjs-pino';
 import errorSerializer from '@libs/serializer/error.serializer';
@@ -27,18 +27,13 @@ export class GithubController {
 
   @Post('/comment/:number')
   async commentOnPullRequest(
-    @Param('number') pullRequestNumber: number,
+    @Param('number', ParseIntPipe) pullRequestNumber: number,
     @Body('comment') comment: string,
     @Body('username') username: string,
     @Body('user-access-token') token: string,
   ): Promise<void> {
     try {
-      await this.githubService.commentOnPullRequest(
-        pullRequestNumber,
-        comment,
-        username,
-        token,
-      );
+      await this.githubService.commentOnPullRequest(pullRequestNumber, comment, username, token);
     } catch (error) {
       const serializedError = errorSerializer(error);
       this.logger.error('Error commenting on pull request:', serializedError);
@@ -47,7 +42,7 @@ export class GithubController {
 
   @Post('/request-changes/:number')
   async requestChangesOnPullRequest(
-    @Param('number') pullRequestNumber: number,
+    @Param('number', ParseIntPipe) pullRequestNumber: number,
     @Body('comment') comment: string,
     @Body('username') username: string,
     @Body('user-access-token') token: string,
@@ -61,23 +56,39 @@ export class GithubController {
       );
     } catch (error) {
       const serializedError = errorSerializer(error);
-      this.logger.error(
-        'Error requesting changes on pull request:',
-        serializedError,
-      );
+      this.logger.error('Error requesting changes on pull request:', serializedError);
     }
   }
-  // missing approve PR method.
+
+  @Post('/approve/:number')
+  async approvePullRequest(
+    @Param('number', ParseIntPipe) pullRequestNumber: number,
+  ): Promise<void> {
+    try {
+      await this.githubService.approvePullRequest(pullRequestNumber);
+    } catch (error) {
+      const serializedError = errorSerializer(error);
+      this.logger.error('Error approving pull request:', serializedError);
+    }
+  }
 
   @Patch('/close/:number')
-  async closePullRequest(
-    @Param('number') pullRequestNumber: number,
-  ): Promise<void> {
+  async closePullRequest(@Param('number', ParseIntPipe) pullRequestNumber: number): Promise<void> {
     try {
       await this.githubService.closePullRequest(pullRequestNumber);
     } catch (error) {
       const serializedError = errorSerializer(error);
       this.logger.error('Error closing pull request:', serializedError);
+    }
+  }
+
+  @Patch('/:number/reopen')
+  async reOpenPullRequest(@Param('number', ParseIntPipe) pullRequestNumber: number): Promise<void> {
+    try {
+      await this.githubService.reOpenPullRequest(pullRequestNumber);
+    } catch (error) {
+      const serializedError = errorSerializer(error);
+      this.logger.error('Error reopening pull request:', serializedError);
     }
   }
 }
