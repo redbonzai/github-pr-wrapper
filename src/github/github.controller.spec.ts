@@ -15,6 +15,7 @@ describe('GithubController', () => {
       closePullRequest: vi.fn(),
       commentOnPullRequest: vi.fn(),
       requestChangesOnPullRequest: vi.fn(),
+      reOpenPullRequest: vi.fn(),
     } as unknown as GithubService;
 
     logger = {
@@ -36,12 +37,7 @@ describe('GithubController', () => {
       body: 'body',
     };
     await controller.createPullRequest(dto.head, dto.base, dto.title, dto.body);
-    expect(service.createPullRequest).toHaveBeenCalledWith(
-      dto.head,
-      dto.base,
-      dto.title,
-      dto.body,
-    );
+    expect(service.createPullRequest).toHaveBeenCalledWith(dto.head, dto.base, dto.title, dto.body);
   });
 
   it('should comment on a pull request', async () => {
@@ -51,12 +47,7 @@ describe('GithubController', () => {
       username: 'user',
       token: 'user-access-token',
     };
-    await controller.commentOnPullRequest(
-      params.number,
-      dto.comment,
-      dto.username,
-      dto.token,
-    );
+    await controller.commentOnPullRequest(params.number, dto.comment, dto.username, dto.token);
     expect(service.commentOnPullRequest).toHaveBeenCalledWith(
       params.number,
       dto.comment,
@@ -90,5 +81,11 @@ describe('GithubController', () => {
     const params = { number: 1 };
     await controller.closePullRequest(params.number);
     expect(service.closePullRequest).toHaveBeenCalledWith(params.number);
+  });
+
+  it('should reopen a pull request', async () => {
+    const params = { number: 1 };
+    await controller.reOpenPullRequest(params.number);
+    expect(service.reOpenPullRequest).toHaveBeenCalledWith(params.number);
   });
 });

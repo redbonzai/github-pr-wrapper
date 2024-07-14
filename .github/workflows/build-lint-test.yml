@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     timeout-minutes: 15
 
     steps:
@@ -47,6 +47,9 @@ jobs:
               pnpm install
             fi
 
+      - name: Add Secret to NX.JSON
+        run: pnpm run add-secret-to-nx
+
       - name: Build the project
         run: npx nx build
 
@@ -58,7 +61,7 @@ jobs:
 
   lint:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     timeout-minutes: 10
 
     steps:
@@ -83,7 +86,7 @@ jobs:
 
   test:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     timeout-minutes: 20
 
     steps:
@@ -116,7 +119,7 @@ jobs:
 
   security:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     timeout-minutes: 10
 
     steps:

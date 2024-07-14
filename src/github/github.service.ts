@@ -126,4 +126,20 @@ export class GithubService {
       );
     }
   }
+
+  async reOpenPullRequest(pullRequestNumber: number): Promise<any> {
+    const url = `https://api.github.com/repos/${this.owner}/${this.repo}/pulls/${pullRequestNumber}`;
+    const data = {
+      state: 'open',
+    };
+
+    try {
+      const response = await fetchData(url, 'PATCH', this.getHeaders(), data);
+      return response;
+    } catch (error) {
+      throw new Error(
+        'Error reopening pull request: ' + (error.response ? error.response.data : error.message),
+      );
+    }
+  }
 }
