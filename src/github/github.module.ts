@@ -10,9 +10,9 @@ import { LoggerModule } from '../../libs/common/logger';
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: Joi.object({
-        GITHUB_TOKEN: Joi.string().required(),
-        GITHUB_OWNER: Joi.string().required(),
-        GITHUB_REPO: Joi.string().required(),
+        TOKEN: Joi.string().required(),
+        OWNER: Joi.string().required(),
+        REPO: Joi.string().required(),
       }),
     }),
     LoggerModule,

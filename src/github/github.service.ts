@@ -9,9 +9,9 @@ export class GithubService {
   private readonly repo: string;
 
   constructor(private configService: ConfigService) {
-    this.githubToken = this.configService.get<string>('GITHUB_TOKEN');
-    this.owner = this.configService.get<string>('GITHUB_OWNER');
-    this.repo = this.configService.get<string>('GITHUB_REPO');
+    this.githubToken = this.configService.get<string>('TOKEN');
+    this.owner = this.configService.get<string>('OWNER');
+    this.repo = this.configService.get<string>('REPO');
   }
 
   private getHeaders(token?: string) {
