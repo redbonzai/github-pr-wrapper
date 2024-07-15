@@ -6,11 +6,13 @@ import { fetchData } from '@libs/services/fetch.service';
 export class GithubService {
   private readonly githubToken: string;
   private readonly owner: string;
+  private readonly collaborator: string;
   private readonly repo: string;
 
   constructor(private configService: ConfigService) {
     this.githubToken = this.configService.get<string>('TOKEN');
     this.owner = this.configService.get<string>('OWNER');
+    this.collaborator = this.configService.get<string>('COLLABORATOR');
     this.repo = this.configService.get<string>('REPO');
   }
 
@@ -139,6 +141,23 @@ export class GithubService {
     } catch (error) {
       throw new Error(
         'Error reopening pull request: ' + (error.response ? error.response.data : error.message),
+      );
+    }
+  }
+
+  async getPullRequests(owner: string, repo: string) {
+    try {
+      const response = await fetchData(
+        `https://api.github.com/repos/${owner}/${repo}/pulls`,
+        'GET',
+        this.getHeaders(),
+      );
+
+      return response.data;
+    } catch (error) {
+      console.error(
+        'Error getting pull requests:',
+        error.response ? error.response.data : error.message,
       );
     }
   }

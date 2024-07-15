@@ -30,4 +30,13 @@ module.exports = [
       '@typescript-eslint/no-explicit-any': 'off',
     },
   },
+  {
+    files: ['nx.js'],
+    parser: 'espree',
+    parserOptions: {
+      ecmaVersion: 2021,
+      sourceType: 'module'
+    },
+
+  }
 ];

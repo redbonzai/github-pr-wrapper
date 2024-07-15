@@ -28,12 +28,14 @@
     "@vitest/snapshot": "^1.6.0",
     "@vitest/ui": "^1.6.0",
     "axios": "^1.7.2",
+    "espree": "^10.1.0",
     "joi": "^17.13.3",
     "nestjs-pino": "^4.1.0",
     "pino": "^9.2.0",
     "pino-pretty": "^11.2.1",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
+    "typescript-eslint": "^7.16.1",
     "vitest": "^1.6.0"
   },
   "devDependencies": {

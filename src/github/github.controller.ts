@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Patch, Param, ParseIntPipe } from '@nestjs/common';
+import { Controller, Post, Body, Patch, Param, ParseIntPipe, Get } from '@nestjs/common';
 import { GithubService } from './github.service';
 import { Logger } from 'nestjs-pino';
 import errorSerializer from '@libs/serializer/error.serializer';
@@ -89,6 +89,16 @@ export class GithubController {
     } catch (error) {
       const serializedError = errorSerializer(error);
       this.logger.error('Error reopening pull request:', serializedError);
+    }
+  }
+
+  @Get('/owner/:owner/repos/:repo/pulls')
+  async getPullRequests(@Param('owner') owner: string, @Param('repo') repo: string): Promise<void> {
+    try {
+      return await this.githubService.getPullRequests(owner, repo);
+    } catch (error) {
+      const serializedError = errorSerializer(error);
+      this.logger.error('Error getting pull requests:', serializedError);
     }
   }
 }

@@ -13,6 +13,8 @@ import { LoggerModule } from '../../libs/common/logger';
         TOKEN: Joi.string().required(),
         OWNER: Joi.string().required(),
         REPO: Joi.string().required(),
+        COLLABORATOR: Joi.string().required(),
+        NX_ACCESS_TOKEN: Joi.string().required(),
       }),
     }),
     LoggerModule,
