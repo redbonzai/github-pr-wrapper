@@ -26,10 +26,12 @@ describe('GithubController', () => {
   });
 
   it('should be defined', () => {
+    console.log('Test: should be defined');
     expect(controller).toBeDefined();
   });
 
   it('should create a pull request', async () => {
+    console.log('Test: should create a pull request');
     const dto = {
       head: 'feature-branch',
       base: 'main',
@@ -41,6 +43,7 @@ describe('GithubController', () => {
   });
 
   it('should comment on a pull request', async () => {
+    console.log('Test: should comment on a pull request');
     const params = { number: 1 };
     const dto = {
       comment: 'comment',
@@ -57,6 +60,7 @@ describe('GithubController', () => {
   });
 
   it('should request changes on a pull request', async () => {
+    console.log('Test: should request changes on a pull request');
     const params = { number: 1 };
     const dto = {
       comment: 'comment',
@@ -78,12 +82,14 @@ describe('GithubController', () => {
   });
 
   it('should close a pull request', async () => {
+    console.log('Test: should close a pull request');
     const params = { number: 1 };
     await controller.closePullRequest(params.number);
     expect(service.closePullRequest).toHaveBeenCalledWith(params.number);
   });
 
   it('should reopen a pull request', async () => {
+    console.log('Test: should reopen a pull request');
     const params = { number: 1 };
     await controller.reOpenPullRequest(params.number);
     expect(service.reOpenPullRequest).toHaveBeenCalledWith(params.number);
