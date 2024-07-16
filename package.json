@@ -91,7 +91,12 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+        "@libs/(.*)": "<rootDir>/../libs/$1",
+        "@src/(.*)": "<rootDir>/$1",
+        "@test/(.*)": "<rootDir>/../test/$1"
+    }
   },
   "nx": {}
 }

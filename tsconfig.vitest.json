@@ -3,5 +3,10 @@
   "compilerOptions": {
     "types": ["vitest/globals"]
   },
+  "paths": {
+    "@libs/*": ["libs/common/*"],
+    "@src/*": ["src/*"],
+    "@test/*": ["test/*"]
+  },
   "include": ["src/**/*.ts", "test/**/*.ts"]
 }
