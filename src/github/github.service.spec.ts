@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { GithubService } from './github.service';
-import { fetchData } from '@libs/services/fetch.service';
+import { fetchData } from '@libs/services';
 
 vi.mock('@libs/services/fetch.service');
 

@@ -34,28 +34,35 @@ jobs:
 
       - name: Create Pull Request
         run: |
-          curl -X POST http://localhost:3000/github/create-pull-request \
+          curl -X POST http://localhost:3000/github/pull-request \
+          -H "Authorization: Bearer ${{ secrets.TOKEN }}" \
           -H "Content-Type: application/json" \
-          -d '{"head": "feature-branch", "base": "main", "title": "Automated PR", "body": "This is an automated pull request."}'
+          -d '{"owner": "redbonzai", "repo": "nest-pr-wrapper", "head": "feature-branch", "base": "main", "title": "Automated PR", "body": "This is an automated pull request."}'
 
       - name: Approve Pull Request
         run: |
-          curl -X POST http://localhost:3000/github/approve-pull-request/1 \
-          -H "Content-Type: application/json"
+          curl -X POST http://localhost:3000/github/pull-request/approve/1 \
+          -H "Authorization: Bearer ${{ secrets.TOKEN }}" \
+          -H "Content-Type: application/json" \
+          -d '{"owner": "redbonzai", "repo": "nest-pr-wrapper"}'
 
       - name: Comment on Pull Request
         run: |
-          curl -X POST http://localhost:3000/github/comment-pull-request/1 \
+          curl -X POST http://localhost:3000/github/pull-request/comment/1 \
+          -H "Authorization: Bearer ${{ secrets.TOKEN }}" \
           -H "Content-Type: application/json" \
-          -d '{"comment": "This is an automated comment."}'
+          -d '{"owner": "redbonzai", "repo": "nest-pr-wrapper", "comment": "This is an automated comment.", "username": "redbonzai"}'
 
       - name: Request Changes on Pull Request
         run: |
-          curl -X POST http://localhost:3000/github/request-changes/1 \
+          curl -X POST http://localhost:3000/github/pull-request/request-changes/1 \
+          -H "Authorization: Bearer ${{ secrets.TOKEN }}" \
           -H "Content-Type: application/json" \
-          -d '{"comment": "Please address these changes."}'
+          -d '{"owner": "redbonzai", "repo": "nest-pr-wrapper", "comment": "Please address these changes.", "username": "redbonzai"}'
 
       - name: Close Pull Request
         run: |
-          curl -X PATCH http://localhost:3000/github/close-pull-request/1 \
-          -H "Content-Type: application/json"
+          curl -X PATCH http://localhost:3000/github/pull-request/close/1 \
+          -H "Authorization: Bearer ${{ secrets.TOKEN }}" \
+          -H "Content-Type: application/json" \
+          -d '{"owner": "redbonzai", "repo": "nest-pr-wrapper"}'

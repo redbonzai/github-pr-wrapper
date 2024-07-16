@@ -4,7 +4,7 @@ import * as request from 'supertest';
 import { vi } from 'vitest';
 import { GithubModule } from '../src/github/github.module';
 import { GithubService } from '../src/github/github.service';
-import { fetchData } from '@libs/services/fetch.service';
+import { fetchData } from '@libs/services';
 import { ConfigModule } from '@nestjs/config';
 
 vi.mock('@libs/services/fetch.service');
