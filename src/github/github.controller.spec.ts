@@ -2,7 +2,6 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { GithubController } from './github.controller';
 import { GithubService } from './github.service';
 import { Logger } from 'nestjs-pino';
-import { fetchData } from '@libs/services/fetch.service';
 
 vi.mock('@libs/services/fetch.service');
 
