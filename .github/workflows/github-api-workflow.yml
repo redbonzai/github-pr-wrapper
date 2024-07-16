@@ -13,21 +13,21 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '20'
 
       - name: Install dependencies
-        run: npm install
+        run: pnpm install
 
       - name: Build the project
-        run: npm run build
+        run: pnpm run build
 
       - name: Start NestJS server
-        run: npm run start &
+        run: pnpm run start &
 
       - name: Create Pull Request
         run: |
