@@ -47,9 +47,6 @@ jobs:
               pnpm install
             fi
 
-      - name: Add Secret to NX.JSON
-        run: pnpm run add-secret-to-nx
-
       - name: Build the project
         run: npx nx build
 

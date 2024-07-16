@@ -45,14 +45,8 @@ describe('GithubController', () => {
       body: 'body',
     };
 
-    await controller.createPullRequest(
-      dto.owner,
-      dto.repo,
-      dto.head,
-      dto.base,
-      dto.title,
-      dto.body,
-    );
+    await controller.createPullRequest(dto);
+
     expect(service.createPullRequest).toHaveBeenCalledWith(
       dto.owner,
       dto.repo,
@@ -71,24 +65,17 @@ describe('GithubController', () => {
       repo: 'repo',
       comment: 'comment',
       username: 'user',
-      token: 'user-access-token',
+      userAccessToken: 'user-access-token',
     };
 
-    await controller.commentOnPullRequest(
-      params.number,
-      dto.owner,
-      dto.repo,
-      dto.comment,
-      dto.username,
-      dto.token,
-    );
+    await controller.commentOnPullRequest(params.number, dto);
     expect(service.commentOnPullRequest).toHaveBeenCalledWith(
       dto.owner,
       dto.repo,
       params.number,
       dto.comment,
       dto.username,
-      dto.token,
+      dto.userAccessToken,
     );
   });
 
@@ -100,24 +87,29 @@ describe('GithubController', () => {
       repo: 'repo',
       comment: 'comment',
       username: 'user',
-      token: 'user-access-token',
+      userAccessToken: 'user-access-token',
     };
-    await controller.requestChangesOnPullRequest(
-      params.number,
-      dto.owner,
-      dto.repo,
-      dto.comment,
-      dto.username,
-      dto.token,
-    );
+    await controller.requestChangesOnPullRequest(params.number, dto);
     expect(service.requestChangesOnPullRequest).toHaveBeenCalledWith(
       dto.owner,
       dto.repo,
       params.number,
       dto.comment,
       dto.username,
-      dto.token,
+      dto.userAccessToken,
     );
+  });
+
+  it('should approve a pull request', async () => {
+    console.log('Test: should approve a pull request');
+    const params = { prId: 1 };
+    const dto = {
+      owner: 'owner',
+      repo: 'repo',
+      prNumber: 1,
+    };
+    await controller.approvePullRequest(params.prId, dto);
+    expect(service.approvePullRequest).toHaveBeenCalledWith(dto.owner, dto.repo, params.prId);
   });
 
   it('should close a pull request', async () => {
@@ -128,7 +120,7 @@ describe('GithubController', () => {
       repo: 'repo',
     };
 
-    await controller.closePullRequest(params.number, dto.owner, dto.repo);
+    await controller.closePullRequest(params.number, dto);
     expect(service.closePullRequest).toHaveBeenCalledWith(dto.owner, dto.repo, params.number);
   });
 
@@ -139,7 +131,7 @@ describe('GithubController', () => {
       owner: 'owner',
       repo: 'repo',
     };
-    await controller.reOpenPullRequest(params.number, dto.owner, dto.repo);
+    await controller.reOpenPullRequest(params.number, dto);
     expect(service.reOpenPullRequest).toHaveBeenCalledWith(dto.owner, dto.repo, params.number);
   });
 
@@ -166,7 +158,7 @@ describe('GithubController', () => {
       repo: 'repo',
     };
 
-    await controller.mergePullRequest(params.number, dto.owner, dto.repo);
+    await controller.mergePullRequest(params.number, dto);
 
     expect(service.mergePullRequest).toHaveBeenCalledWith(dto.owner, dto.repo, params.number);
   });
