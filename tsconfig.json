@@ -26,8 +26,9 @@
   "include": [
     "src/**/*",
     "libs/**/*",
-    "apps/**/*",
-    "tests/**/*"
+    "test/**/*",
+    "vitest.config.ts",
+    "eslint.config.js"
   ],
   "exclude": ["node_modules", "dist"]
 }

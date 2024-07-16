@@ -5,6 +5,7 @@ export default defineConfig({
     globals: true,
     environment: 'node',
     setupFiles: './vitest-setup.ts',
+    testMatch: ['**/test/e2e/**/*e2e-spec.ts'],
   },
   resolve: {
     alias: {
