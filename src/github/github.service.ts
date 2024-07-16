@@ -1,30 +1,28 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { fetchData } from '@libs/services/fetch.service';
 
 @Injectable()
 export class GithubService {
   private readonly githubToken: string;
-  private readonly owner: string;
-  private readonly collaborator: string;
-  private readonly repo: string;
 
-  constructor(private configService: ConfigService) {
-    this.githubToken = this.configService.get<string>('TOKEN');
-    this.owner = this.configService.get<string>('OWNER');
-    this.collaborator = this.configService.get<string>('COLLABORATOR');
-    this.repo = this.configService.get<string>('REPO');
-  }
+  constructor() {}
 
-  private getHeaders(token?: string) {
+  getHeaders(token?: string) {
     return {
       Authorization: `token ${this.githubToken || token}`,
       Accept: 'application/vnd.github.v3+json',
     };
   }
 
-  async createPullRequest(head: string, base: string, title: string, body: string): Promise<any> {
-    const url = `https://api.github.com/repos/${this.owner}/${this.repo}/pulls`;
+  async createPullRequest(
+    owner: string,
+    repo: string,
+    head: string,
+    base: string,
+    title: string,
+    body: string,
+  ): Promise<any> {
+    const url = `https://api.github.com/repos/${owner}/${repo}/pulls`;
     console.log('PR URL: ', url);
 
     const data = {
@@ -47,12 +45,14 @@ export class GithubService {
   }
 
   async commentOnPullRequest(
-    pullRequestNumber: number,
+    owner: string,
+    repo: string,
+    prNumber: number,
     comment: string,
     username: string,
     token: string,
   ): Promise<void> {
-    const url = `https://api.github.com/repos/${this.owner}/${this.repo}/issues/${pullRequestNumber}/comments`;
+    const url = `https://api.github.com/repos/${owner}/${repo}/issues/${prNumber}/comments`;
 
     const data = {
       body: comment,
@@ -68,12 +68,14 @@ export class GithubService {
   }
 
   async requestChangesOnPullRequest(
-    pullRequestNumber: number,
+    owner: string,
+    repo: string,
+    prNumber: number,
     comment: string,
     username: string,
     token: string,
   ): Promise<void> {
-    const url = `https://api.github.com/repos/${this.owner}/${this.repo}/pulls/${pullRequestNumber}/reviews`;
+    const url = `https://api.github.com/repos/${owner}/${repo}/pulls/${prNumber}/reviews`;
 
     const data = {
       body: comment,
@@ -93,8 +95,8 @@ export class GithubService {
     }
   }
 
-  async approvePullRequest(pullRequestNumber: number): Promise<void> {
-    const url = `https://api.github.com/repos/${this.owner}/${this.repo}/pulls/${pullRequestNumber}/reviews`;
+  async approvePullRequest(owner: string, repo: string, prNumber: number): Promise<void> {
+    const url = `https://api.github.com/repos/${owner}/${repo}/pulls/${prNumber}/reviews`;
     const data = {
       event: 'APPROVE',
     };
@@ -110,8 +112,54 @@ export class GithubService {
     }
   }
 
-  async closePullRequest(pullRequestNumber: number): Promise<any> {
-    const url = `https://api.github.com/repos/${this.owner}/${this.repo}/pulls/${pullRequestNumber}`;
+  async getPrStatuses(owner: string, repo: string, pull_number: number) {
+    try {
+      const response = await fetchData(
+        `https://api.github.com/repos/${owner}/${repo}/pulls/${pull_number}/statuses`,
+        'GET',
+        this.getHeaders(),
+      );
+      return response.data;
+    } catch (error) {
+      console.error(
+        'Error getting pull request statuses:',
+        error.response ? error.response.data : error.message,
+      );
+    }
+  }
+
+  async mergePullRequest(owner: string, repo: string, pull_number: number): Promise<any> {
+    // Step 1: Check the pull request statuses
+    const statuses = await this.getPrStatuses(owner, repo, pull_number);
+    if (!statuses || !Array.isArray(statuses)) {
+      throw new Error('Failed to retrieve pull request statuses');
+    }
+
+    // Ensure all statuses are 'success'
+    const failedStatuses = statuses.filter((status) => status.state !== 'success');
+    if (failedStatuses.length > 0) {
+      const failedContexts = failedStatuses.map((status) => status.context).join(', ');
+      throw new Error(`Not all checks have passed. Failed checks: ${failedContexts}`);
+    }
+
+    const data = {
+      commit_title: `Merging PR #${pull_number}`,
+      merge_method: 'merge', // Options: merge, squash, rebase
+    };
+
+    // Step 2: Merge the pull request
+    const response = await fetchData(
+      `https://api.github.com/repos/${owner}/${repo}/pulls/${pull_number}/merge`,
+      'PUT',
+      this.getHeaders(),
+      data,
+    );
+
+    return response.data;
+  }
+
+  async closePullRequest(owner: string, repo: string, prNumber: number): Promise<any> {
+    const url = `https://api.github.com/repos/${owner}/${repo}/pulls/${prNumber}`;
 
     const data = {
       state: 'closed',
@@ -129,8 +177,8 @@ export class GithubService {
     }
   }
 
-  async reOpenPullRequest(pullRequestNumber: number): Promise<any> {
-    const url = `https://api.github.com/repos/${this.owner}/${this.repo}/pulls/${pullRequestNumber}`;
+  async reOpenPullRequest(owner: string, repo: string, prNumber: number): Promise<any> {
+    const url = `https://api.github.com/repos/${owner}/${repo}/pulls/${prNumber}`;
     const data = {
       state: 'open',
     };

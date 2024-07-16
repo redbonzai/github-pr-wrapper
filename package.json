@@ -6,7 +6,6 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "add-secret-to-nx": "node libs/scripts/load-nx-config.js",
     "build": "nx build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
@@ -18,7 +17,7 @@
     "test:watch": "npx vitest --watch",
     "test:cov": "npx vitest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "node libs/scripts/load-nx-config.js && npx vitest --config ./test/jest-e2e.json"
+    "test:e2e": "npx vitest --config ./test/jest-e2e.json"
   },
   "dependencies": {
     "@nestjs/common": "^10.3.10",
