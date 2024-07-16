@@ -1,10 +1,6 @@
 import { fetchData } from './fetch.service';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-vi.mock('./fetch-data.service', () => ({
-  fetchData: vi.fn(),
-}));
-
 describe('fetchData', () => {
   beforeEach(() => {
     vi.resetAllMocks();
@@ -35,7 +31,12 @@ describe('fetchData', () => {
     } as Response);
 
     const postData = { key: 'value' };
-    const result = await fetchData('http://example.com', 'POST', { 'Content-Type': 'application/json' }, postData);
+    const result = await fetchData(
+      'http://example.com',
+      'POST',
+      { 'Content-Type': 'application/json' },
+      postData,
+    );
 
     expect(fetchDataSpy).toHaveBeenCalledWith('http://example.com', {
       method: 'POST',
@@ -47,14 +48,14 @@ describe('fetchData', () => {
   });
 
   it('should throw an error for a failed request', async () => {
-     vi.spyOn(global, 'fetch').mockResolvedValueOnce({
+    vi.spyOn(global, 'fetch').mockResolvedValueOnce({
       ok: false,
       status: 500,
       json: async () => ({ message: 'Internal Server Error' }),
     } as Response);
 
     await expect(fetchData('http://example.com', 'GET')).rejects.toThrow(
-      'HTTP error! Status: 500, Body: {"message":"Internal Server Error"}'
+      'HTTP error! Status: 500, Body: {"message":"Internal Server Error"}',
     );
   });
 });
