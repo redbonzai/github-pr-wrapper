@@ -1,7 +1,7 @@
 import { Controller, Post, Body, Patch, Param, ParseIntPipe, Get, Put } from '@nestjs/common';
 import { GithubService } from './github.service';
 import { Logger } from 'nestjs-pino';
-import errorSerializer from '@libs/serializer/error.serializer';
+import errorSerializer from '../../libs/common/serializer/error.serializer';
 import {
   ApprovePullRequestDto,
   ClosePullRequestDto,
