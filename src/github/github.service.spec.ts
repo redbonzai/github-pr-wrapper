@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { GithubService } from './github.service';
 import { fetchData } from '@libs/services/fetch.service';
-import { vi } from 'vitest';
+import { vi, describe, it, expect, beforeEach } from 'vitest';
 
 vi.mock('@libs/services/fetch.service', () => ({
   fetchData: vi.fn(),
