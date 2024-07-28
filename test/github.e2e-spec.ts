@@ -4,10 +4,10 @@ import * as request from 'supertest';
 import { vi } from 'vitest';
 import { GithubModule } from '../src/github/github.module';
 import { GithubService } from '../src/github/github.service';
-import { fetchData } from '@libs/services';
+import { fetchData } from '../libs/common/services/fetch.service';
 import { ConfigModule } from '@nestjs/config';
 
-vi.mock('@libs/services/fetch.service');
+vi.mock('../libs/common/services/fetch.service');
 
 describe('GithubService (e2e)', () => {
   let app: INestApplication;

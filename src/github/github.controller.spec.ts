@@ -3,7 +3,7 @@ import { GithubController } from './github.controller';
 import { GithubService } from './github.service';
 import { Logger } from 'nestjs-pino';
 
-vi.mock('@libs/services/fetch.service');
+vi.mock('../../libs/common/services/fetch.service');
 
 describe('GithubController', () => {
   let controller: GithubController;

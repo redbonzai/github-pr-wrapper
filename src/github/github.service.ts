@@ -1,12 +1,19 @@
 import { Injectable } from '@nestjs/common';
 
-import { fetchData } from '@libs/services/fetch.service';
+import { fetchData } from '../../libs/common/services/fetch.service';
+import { ConfigService } from '@nestjs/config';
+import { GithubResponseDTO } from '@src/github/dto/github-response-d-t.o';
+import errorSerializer from '@libs/serializer/error.serializer';
 
 @Injectable()
 export class GithubService {
   private readonly githubToken: string;
+  private readonly githubAPIUrl: string;
 
-  constructor() {}
+  constructor(private configService: ConfigService) {
+    this.githubToken = this.configService.get<string>('TOKEN');
+    this.githubAPIUrl = this.configService.get<string>('GITHUB_API_URL');
+  }
 
   getHeaders(token?: string) {
     return {
@@ -23,7 +30,7 @@ export class GithubService {
     title: string,
     body: string,
   ): Promise<any> {
-    const url = `https://api.github.com/repos/${owner}/${repo}/pulls`;
+    const url = `${this.githubAPIUrl}/repos/${owner}/${repo}/pulls`;
     console.log('PR URL: ', url);
 
     const data = {
@@ -53,7 +60,7 @@ export class GithubService {
     username: string,
     token: string,
   ): Promise<void> {
-    const url = `https://api.github.com/repos/${owner}/${repo}/issues/${prNumber}/comments`;
+    const url = `${this.githubAPIUrl}/repos/${owner}/${repo}/issues/${prNumber}/comments`;
 
     const data = {
       body: comment,
@@ -62,7 +69,8 @@ export class GithubService {
 
     try {
       const response = await fetchData(url, 'POST', this.getHeaders(token), data);
-      console.log('Comment added successfully:', response.data);
+      console.log('Comment added successfully:', response);
+      return response;
     } catch (error) {
       console.error('Error adding comment:', error.response ? error.response.data : error.message);
     }
@@ -76,7 +84,7 @@ export class GithubService {
     username: string,
     token: string,
   ): Promise<void> {
-    const url = `https://api.github.com/repos/${owner}/${repo}/pulls/${prNumber}/reviews`;
+    const url = `${this.githubAPIUrl}/repos/${owner}/${repo}/pulls/${prNumber}/reviews`;
 
     const data = {
       body: comment,
@@ -97,7 +105,7 @@ export class GithubService {
   }
 
   async approvePullRequest(owner: string, repo: string, prNumber: number): Promise<void> {
-    const url = `https://api.github.com/repos/${owner}/${repo}/pulls/${prNumber}/reviews`;
+    const url = `${this.githubAPIUrl}/repos/${owner}/${repo}/pulls/${prNumber}/reviews`;
     const data = {
       event: 'APPROVE',
     };
@@ -116,7 +124,7 @@ export class GithubService {
   async getPrStatuses(owner: string, repo: string, pull_number: number) {
     try {
       const response = await fetchData(
-        `https://api.github.com/repos/${owner}/${repo}/pulls/${pull_number}/statuses`,
+        `${this.githubAPIUrl}/repos/${owner}/${repo}/pulls/${pull_number}/statuses`,
         'GET',
         this.getHeaders(),
       );
@@ -150,7 +158,7 @@ export class GithubService {
 
     // Step 2: Merge the pull request
     const response = await fetchData(
-      `https://api.github.com/repos/${owner}/${repo}/pulls/${pull_number}/merge`,
+      `${this.githubAPIUrl}/repos/${owner}/${repo}/pulls/${pull_number}/merge`,
       'PUT',
       this.getHeaders(),
       data,
@@ -160,33 +168,27 @@ export class GithubService {
   }
 
   async closePullRequest(owner: string, repo: string, prNumber: number): Promise<any> {
-    const url = `https://api.github.com/repos/${owner}/${repo}/pulls/${prNumber}`;
+    const url = `${this.githubAPIUrl}/repos/${owner}/${repo}/pulls/${prNumber}`;
 
     const data = {
       state: 'closed',
     };
 
     try {
-      const response = await fetchData(url, 'PATCH', this.getHeaders(), data);
-      console.log('Pull request closed successfully:', response);
-      return response;
+      return await fetchData(url, 'PATCH', this.getHeaders(), data);
     } catch (error) {
-      console.error(
-        'Error closing pull request:',
-        error.response ? error.response.data : error.message,
-      );
+      throw new Error(error);
     }
   }
 
   async reOpenPullRequest(owner: string, repo: string, prNumber: number): Promise<any> {
-    const url = `https://api.github.com/repos/${owner}/${repo}/pulls/${prNumber}`;
+    const url = `${this.githubAPIUrl}/repos/${owner}/${repo}/pulls/${prNumber}`;
     const data = {
       state: 'open',
     };
 
     try {
-      const response = await fetchData(url, 'PATCH', this.getHeaders(), data);
-      return response;
+      return await fetchData(url, 'PATCH', this.getHeaders(), data);
     } catch (error) {
       throw new Error(
         'Error reopening pull request: ' + (error.response ? error.response.data : error.message),
@@ -197,12 +199,12 @@ export class GithubService {
   async getPullRequests(owner: string, repo: string) {
     try {
       const response = await fetchData(
-        `https://api.github.com/repos/${owner}/${repo}/pulls`,
+        `${this.githubAPIUrl}/repos/${owner}/${repo}/pulls`,
         'GET',
         this.getHeaders(),
       );
 
-      return response.data;
+      return { pullRequests: response } as GithubResponseDTO;
     } catch (error) {
       console.error(
         'Error getting pull requests:',

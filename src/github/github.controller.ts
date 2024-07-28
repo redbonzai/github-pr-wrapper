@@ -9,7 +9,9 @@ import {
   CreatePullRequestDto,
   OwnerRepoDto,
   RequestChangesDto,
-} from '@src/github/dto';
+} from './dto';
+import { GithubResponseDTO } from '@src/github/dto/github-response-d-t.o';
+import { NumberParam, StringParam } from '@libs/decorators';
 
 @Controller('github/pull-request')
 export class GithubController {
@@ -33,10 +35,10 @@ export class GithubController {
   async commentOnPullRequest(
     @Param('number', ParseIntPipe) prNumber: number,
     @Body() commentOnPullRequestDto: CommentPullRequestDto,
-  ): Promise<void> {
+  ): Promise<any> {
     try {
       const { owner, repo, comment, username, userAccessToken } = commentOnPullRequestDto;
-      await this.githubService.commentOnPullRequest(
+      const response = await this.githubService.commentOnPullRequest(
         owner,
         repo,
         prNumber,
@@ -44,6 +46,8 @@ export class GithubController {
         username,
         userAccessToken,
       );
+      console.log('COMMENT RESPONSE: ', response);
+      return response;
     } catch (error) {
       const serializedError = errorSerializer(error);
       this.logger.error('Error commenting on pull request:', serializedError);
@@ -87,12 +91,12 @@ export class GithubController {
 
   @Patch('/close/:number')
   async closePullRequest(
-    @Param('number', ParseIntPipe) prNumber: number,
+    @NumberParam('number', ParseIntPipe) prNumber: number,
     @Body() closePrDto: ClosePullRequestDto,
-  ): Promise<void> {
+  ): Promise<any> {
     try {
       const { owner, repo } = closePrDto;
-      await this.githubService.closePullRequest(owner, repo, prNumber);
+      return await this.githubService.closePullRequest(owner, repo, prNumber);
     } catch (error) {
       const serializedError = errorSerializer(error);
       this.logger.error('Error closing pull request:', serializedError);
@@ -101,12 +105,14 @@ export class GithubController {
 
   @Patch('/:number/reopen')
   async reOpenPullRequest(
-    @Param('number', ParseIntPipe) prNumber: number,
+    @NumberParam('number', ParseIntPipe) prNumber: number,
     @Body() ownerRepoDto: OwnerRepoDto,
-  ): Promise<void> {
+  ): Promise<any> {
     try {
       const { owner, repo } = ownerRepoDto;
-      await this.githubService.reOpenPullRequest(owner, repo, prNumber);
+      const response = await this.githubService.reOpenPullRequest(owner, repo, prNumber);
+      console.log('RESPONSE: ', response);
+      return response;
     } catch (error) {
       const serializedError = errorSerializer(error);
       this.logger.error('Error reopening pull request:', serializedError);
@@ -114,9 +120,14 @@ export class GithubController {
   }
 
   @Get('/owner/:owner/repos/:repo/pulls')
-  async getPullRequests(@Param('owner') owner: string, @Param('repo') repo: string): Promise<void> {
+  async getPullRequests(
+    @StringParam('owner') owner: string,
+    @StringParam('repo') repo: string,
+  ): Promise<GithubResponseDTO> {
     try {
-      return await this.githubService.getPullRequests(owner, repo);
+      const response = await this.githubService.getPullRequests(owner, repo);
+      console.log('RESPONSE: ', response);
+      return response;
     } catch (error) {
       const serializedError = errorSerializer(error);
       this.logger.error('Error getting pull requests:', serializedError);
@@ -130,7 +141,9 @@ export class GithubController {
     @Param('number', ParseIntPipe) prNumber: number,
   ): Promise<void> {
     try {
-      return await this.githubService.getPrStatuses(owner, repo, prNumber);
+      const response = await this.githubService.getPrStatuses(owner, repo, prNumber);
+      console.log('RESPONSE: ', response);
+      return response;
     } catch (error) {
       const serializedError = errorSerializer(error);
       this.logger.error('Error getting pull request statuses:', serializedError);
