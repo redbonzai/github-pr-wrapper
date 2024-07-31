@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Patch, Param, ParseIntPipe, Get, Put } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Patch, Post, Put } from '@nestjs/common';
 import { GithubService } from './github.service';
 import { Logger } from 'nestjs-pino';
 import errorSerializer from '../../libs/common/serializer/error.serializer';
@@ -10,7 +10,7 @@ import {
   OwnerRepoDto,
   RequestChangesDto,
 } from './dto';
-import { GithubResponseDTO } from '@src/github/dto/github-response-d-t.o';
+import { GithubResponseDTO } from '../github/dto/github-response.dto';
 import { NumberParam, StringParam } from '@libs/decorators';
 
 @Controller('github/pull-request')
@@ -38,7 +38,7 @@ export class GithubController {
   ): Promise<any> {
     try {
       const { owner, repo, comment, username, userAccessToken } = commentOnPullRequestDto;
-      const response = await this.githubService.commentOnPullRequest(
+      return await this.githubService.commentOnPullRequest(
         owner,
         repo,
         prNumber,
@@ -46,8 +46,6 @@ export class GithubController {
         username,
         userAccessToken,
       );
-      console.log('COMMENT RESPONSE: ', response);
-      return response;
     } catch (error) {
       const serializedError = errorSerializer(error);
       this.logger.error('Error commenting on pull request:', serializedError);
@@ -58,10 +56,10 @@ export class GithubController {
   async requestChangesOnPullRequest(
     @Param('number', ParseIntPipe) prNumber: number,
     @Body() requestChangesDto: RequestChangesDto,
-  ): Promise<void> {
+  ): Promise<any> {
     try {
       const { owner, repo, comment, username, userAccessToken } = requestChangesDto;
-      await this.githubService.requestChangesOnPullRequest(
+      return await this.githubService.requestChangesOnPullRequest(
         owner,
         repo,
         prNumber,
@@ -72,6 +70,7 @@ export class GithubController {
     } catch (error) {
       const serializedError = errorSerializer(error);
       this.logger.error('Error requesting changes on pull request:', serializedError);
+      return serializedError;
     }
   }
 
@@ -110,9 +109,7 @@ export class GithubController {
   ): Promise<any> {
     try {
       const { owner, repo } = ownerRepoDto;
-      const response = await this.githubService.reOpenPullRequest(owner, repo, prNumber);
-      console.log('RESPONSE: ', response);
-      return response;
+      return await this.githubService.reOpenPullRequest(owner, repo, prNumber);
     } catch (error) {
       const serializedError = errorSerializer(error);
       this.logger.error('Error reopening pull request:', serializedError);
@@ -125,9 +122,7 @@ export class GithubController {
     @StringParam('repo') repo: string,
   ): Promise<GithubResponseDTO> {
     try {
-      const response = await this.githubService.getPullRequests(owner, repo);
-      console.log('RESPONSE: ', response);
-      return response;
+      return await this.githubService.getPullRequests(owner, repo);
     } catch (error) {
       const serializedError = errorSerializer(error);
       this.logger.error('Error getting pull requests:', serializedError);
@@ -141,9 +136,7 @@ export class GithubController {
     @Param('number', ParseIntPipe) prNumber: number,
   ): Promise<void> {
     try {
-      const response = await this.githubService.getPrStatuses(owner, repo, prNumber);
-      console.log('RESPONSE: ', response);
-      return response;
+      return await this.githubService.getPrStatuses(owner, repo, prNumber);
     } catch (error) {
       const serializedError = errorSerializer(error);
       this.logger.error('Error getting pull request statuses:', serializedError);
