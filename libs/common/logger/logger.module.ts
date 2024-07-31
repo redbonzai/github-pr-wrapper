@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { LoggerModule as PinoLoggerModule } from 'nestjs-pino';
-import * as pino from 'pino';
 
 @Module({
   imports: [
@@ -26,11 +25,24 @@ import * as pino from 'pino';
           res: (res) => {
             return {
               statusCode: res.statusCode,
+              headers: res.headers,
+              responseTime: res.responseTime,
               error: res.error,
               // Add any other response properties you want to log
             };
           },
-          err: pino.stdSerializers.err,
+          err: (err) => {
+            return {
+              type: err.type,
+              message: err.message,
+              stack: err.stack,
+              name: err.name,
+              code: err.code,
+              signal: err.signal,
+              additionalInfo: err.additionalInfo,
+              // Add any other error properties you want to log
+            };
+          },
         },
       },
     }),
