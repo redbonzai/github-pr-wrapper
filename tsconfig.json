@@ -21,14 +21,8 @@
       "@libs/*": ["libs/common/*"],
       "@src/*": ["src/*"],
       "@test/*": ["test/*"]
-    },
+    }
   },
-  "include": [
-    "src/**/*",
-    "libs/**/*",
-    "test/**/*",
-    "vitest.config.ts",
-    "eslint.config.js"
-  ],
+  "include": ["src/**/*", "libs/**/*", "test/**/*", "vitest.config.ts", "eslint.config.js"],
   "exclude": ["node_modules", "dist"]
 }

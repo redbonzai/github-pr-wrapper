@@ -64,3 +64,4 @@ nx/dist
 .nx/workspace-data
 /.nx/
 /actions-runner/
+*.pem

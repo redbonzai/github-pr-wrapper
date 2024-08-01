@@ -3,7 +3,7 @@ import { GithubController } from './github.controller';
 import { GithubService } from './github.service';
 import { Logger } from 'nestjs-pino';
 
-vi.mock('@libs/services/fetch.service');
+vi.mock('../../libs/common/services/fetch.service');
 
 describe('GithubController', () => {
   let controller: GithubController;
@@ -30,12 +30,10 @@ describe('GithubController', () => {
   });
 
   it('should be defined', () => {
-    console.log('Test: should be defined');
     expect(controller).toBeDefined();
   });
 
   it('should create a pull request', async () => {
-    console.log('Test: should create a pull request');
     const dto = {
       owner: 'owner',
       repo: 'repo',
@@ -58,7 +56,6 @@ describe('GithubController', () => {
   });
 
   it('should comment on a pull request', async () => {
-    console.log('Test: should comment on a pull request');
     const params = { number: 1 };
     const dto = {
       owner: 'owner',
@@ -80,7 +77,6 @@ describe('GithubController', () => {
   });
 
   it('should request changes on a pull request', async () => {
-    console.log('Test: should request changes on a pull request');
     const params = { number: 1 };
     const dto = {
       owner: 'owner',
@@ -101,7 +97,6 @@ describe('GithubController', () => {
   });
 
   it('should approve a pull request', async () => {
-    console.log('Test: should approve a pull request');
     const params = { prId: 1 };
     const dto = {
       owner: 'owner',
@@ -113,7 +108,6 @@ describe('GithubController', () => {
   });
 
   it('should close a pull request', async () => {
-    console.log('Test: should close a pull request');
     const params = { number: 1 };
     const dto = {
       owner: 'owner',
