@@ -1,5 +1,5 @@
 module.exports = {
-  npmScope: 'nest-pr-wrapper',
+  npmScope: 'prwrapper',
   affected: {
     defaultBase: 'main',
   },
@@ -19,16 +19,16 @@ module.exports = {
     },
   },
   projects: {
-    'nest-pr-wrapper-root': {
+    'prwrapper-root': {
       tags: [],
     },
     common: {
       tags: [],
     },
-    'nest-pr-wrapper': {
+    prwrapper: {
       tags: [],
     },
-    'nest-pr-wrapper-e2e': {
+    'prwrapper-e2e': {
       tags: [],
     },
   },

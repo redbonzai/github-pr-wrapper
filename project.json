@@ -1,5 +1,5 @@
 {
-  "name": "nest-pr-wrapper-root",
+  "name": "prwrapper-root",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "src",
   "projectType": "application",
@@ -30,11 +30,11 @@
     "serve": {
       "executor": "@nrwl/js:node",
       "options": {
-        "buildTarget": "nest-pr-wrapper:build"
+        "buildTarget": "prwrapper:build"
       },
       "configurations": {
         "production": {
-          "buildTarget": "nest-pr-wrapper:build:production"
+          "buildTarget": "prwrapper:build:production"
         }
       }
     },
@@ -43,7 +43,7 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": [
-          "src/**/*.ts",
+          "apps/**/*.ts",
           "libs/**/*.ts"
         ]
       }

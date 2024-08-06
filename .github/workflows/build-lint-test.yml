@@ -79,7 +79,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Lint the project
-        run: npx nx lint nest-pr-wrapper-root
+        run: npx nx lint prwrapper-root
 
   test:
     needs: build
