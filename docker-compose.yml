@@ -1,16 +1,30 @@
 services:
-  api:
+  prwrapper:
     build:
       context: .
-      dockerfile: ./dev.Dockerfile
+      dockerfile: ./apps/prwrapper/docker/dev.Dockerfile
       target: development
     ports:
-      - '3000:3000'
+      - '3100:3100'
     volumes:
-      - .:/usr/src/app
-      # - /usr/src/app/node_modules
+      - .:/app
     env_file:
-      - ./.env
+      - ./apps/prwrapper/.env
     environment:
       NODE_ENV: development
-    command: pnpm run start:dev api
+    command: node dist/apps/prwrapper/src/main.js
+
+  octokit:
+    build:
+      context: .
+      dockerfile: ./apps/octokit/docker/dev.Dockerfile
+      target: development
+    ports:
+      - '3200:3200'
+    volumes:
+      - .:/app
+    env_file:
+      - ./apps/octokit/.env
+    environment:
+      NODE_ENV: development
+    command: node dist/apps/octokit/src/main.js

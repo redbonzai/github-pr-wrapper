@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "target": "ES2021",
+    "module": "NodeNext",
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
@@ -15,14 +15,45 @@
     "strictNullChecks": false,
     "noImplicitAny": false,
     "strictBindCallApply": false,
+    "moduleResolution": "NodeNext",
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@libs/*": ["libs/common/*"],
-      "@src/*": ["src/*"],
-      "@test/*": ["test/*"]
+      "@libs/*": [
+        "libs/common/*"
+      ],
+      "@prwrapper": [
+        "apps/prwrapper/src"
+      ],
+      "@prwrapper/*": [
+        "apps/prwrapper/src/*"
+      ],
+      "@octokit": [
+        "apps/octokit/src"  // Fixed path
+      ],
+      "@octokit/*": [
+        "apps/octokit/src/*"  // Fixed path
+      ],
+      "@testapp": [
+        "apps/testapp/src"
+      ],
+      "@testapp/*": [
+        "apps/testapp/src/*"
+      ]
     }
   },
-  "include": ["src/**/*", "libs/**/*", "test/**/*", "vitest.config.ts", "eslint.config.js"],
-  "exclude": ["node_modules", "dist"]
+  "include": [
+    "src/**/*",
+    "libs/**/*",
+    "test/**/*",
+    "apps/**/*",
+    "vitest.config.ts",
+    "eslint.config.js"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "coverage",
+    "octokit"
+  ]
 }

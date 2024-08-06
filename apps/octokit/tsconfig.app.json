@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "target": "ES2020",           // or "ESNext"
+    "module": "NodeNext",           // Ensures modules are output as ESM
+    "moduleResolution": "NodeNext",   // Ensures proper resolution for node modules
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "../../dist/apps/octokit"
+  },
+  "compilerOptions": {
+
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "test", "**/*spec.ts"]
+}

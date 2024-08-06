@@ -1,43 +1,49 @@
 {
-  "name": "nest-pr-wrapper",
+  "name": "pr-wrapper",
   "version": "0.0.1",
   "description": "",
   "author": "",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "nx build",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "build": "npx nx build",
+    "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
-    "lint": "npx nx lint nest-pr-wrapper-root",
+    "start:prod": "node dist/apps/prwrapper/src/main",
+    "lint": "npx nx lint prwrapper-root",
     "test": "npx vitest",
     "test:watch": "npx vitest --watch",
     "test:cov": "npx vitest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "npx vitest --config ./test/jest-e2e.json"
+    "test:e2e": "npx vitest --config ./apps/prwrapper/test/jest-e2e.json"
   },
   "dependencies": {
     "@nestjs/common": "^10.3.10",
     "@nestjs/core": "^10.3.10",
     "@nestjs/platform-express": "^10.3.10",
+    "@nestjs/testing": "^10.3.10",
+    "@octokit/core": "^6.1.2",
+    "@slack/socket-mode": "^2.0.0",
+    "@slack/web-api": "^7.3.2",
     "@vitest/coverage-v8": "^1.6.0",
     "@vitest/snapshot": "^1.6.0",
     "@vitest/ui": "^1.6.0",
-    "@nestjs/testing": "^10.3.10",
     "axios": "^1.7.2",
     "class-validator": "^0.14.1",
     "espree": "^10.1.0",
     "joi": "^17.13.3",
     "nestjs-pino": "^4.1.0",
+    "octokit-auth-probot": "^3.0.0",
+    "p-retry": "^6.2.0",
     "pino": "^9.2.0",
     "pino-pretty": "^11.2.1",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
     "typescript-eslint": "^7.16.1",
-    "vitest": "^1.6.0"
+    "vitest": "^1.6.0",
+    "ws": "^8.18.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^2.1.4",
@@ -45,7 +51,6 @@
     "@nestjs/cli": "^10.4.2",
     "@nestjs/config": "^3.2.3",
     "@nestjs/schematics": "^10.1.2",
-
     "@nrwl/eslint-plugin-nx": "^19.4.2",
     "@nrwl/js": "^19.4.2",
     "@nrwl/linter": "^19.4.2",
@@ -84,7 +89,7 @@
       "json",
       "ts"
     ],
-    "rootDir": "src",
+    "rootDir": ".",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
@@ -92,13 +97,16 @@
     "collectCoverageFrom": [
       "**/*.(t|j)s"
     ],
-    "coverageDirectory": "../coverage",
+    "coverageDirectory": "./coverage",
     "testEnvironment": "node",
     "moduleNameMapper": {
       "@libs/(.*)": "<rootDir>/../libs/common/$1",
       "@src/(.*)": "<rootDir>/$1",
       "@test/(.*)": "<rootDir>/../test/$1"
-    }
+    },
+    "roots": [
+      "<rootDir>/apps/"
+    ]
   },
   "nx": {}
 }
