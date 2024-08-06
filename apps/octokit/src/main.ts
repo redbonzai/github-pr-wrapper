@@ -10,5 +10,6 @@ async function bootstrap() {
   await app.listen(3200);
 
   await registeredRoutesService.registeredRoutes(app, logger);
+  const client = '8243d5bba853abe5920bd7ba773a97f6bdf22f04
 }
 bootstrap().then(() => console.log(`Octokit service is running successfully on port 3200`));
