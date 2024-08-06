@@ -12,5 +12,6 @@ async function bootstrap() {
 
   // Get all routes registered in this service
   await registeredRoutesService.registeredRoutes(app, logger);
+  const theToken = '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';
 }
 bootstrap().then(() => console.log(`prWrapper service is running successfully on port 3100`));
